@@ -5,12 +5,18 @@ namespace PlacesYouBeen.Models
     public class Place
     {
         public string CityName { get; set; }
+        public string Duration { get; set; }
+        public string Group { get; set; }
+        public string JournalEntry { get; set; }
         public int Id { get; }
         private static List<Place> _instances = new List<Place> ();
 
-        public Place(string cityName)
+        public Place(string cityName, string duration, string group, string journalEntry)
         {
             CityName = cityName;
+            Duration = duration;
+            Group = group;
+            JournalEntry = journalEntry;
             _instances.Add(this);
             Id = _instances.Count;
         }
