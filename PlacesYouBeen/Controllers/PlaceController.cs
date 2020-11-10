@@ -23,6 +23,7 @@ namespace PlacesYouBeen.Controllers
         public ActionResult Create(string cityName, string duration, string group, string journalEntry)
         {
             Place myPlace = new Place(cityName, duration, group, journalEntry);
+            myPlace.Save();
             return RedirectToAction("Index");
         }
 

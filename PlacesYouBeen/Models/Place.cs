@@ -57,9 +57,9 @@ namespace PlacesYouBeen.Models
             {
                 int placeId = rdr.GetInt32(0);
                 string placeName = rdr.GetString(1);
-                string placeDuration = rdr.GetString(1);
-                string placeGroup = rdr.GetString(1);
-                string placeJournal = rdr.GetString(1);
+                string placeDuration = rdr.GetString(2);
+                string placeGroup = rdr.GetString(3);
+                string placeJournal = rdr.GetString(4);
                 Place newPlace = new Place(placeName, placeDuration, placeGroup, placeJournal, placeId);
                 allPlaces.Add(newPlace);
             }
@@ -79,15 +79,30 @@ namespace PlacesYouBeen.Models
 
             // Begin new code
 
-            cmd.CommandText = @"INSERT INTO places (name) VALUES (@PlaceName);";
-            MySqlParameter param = new MySqlParameter();
-            param.ParameterName = "@PlaceName";
-            param.Value = this.CityName;
-            cmd.Parameters.Add(param);
+            cmd.CommandText = @"INSERT INTO places (cityName, duration, buddies, journalEntry) VALUES (@PlaceName, @PlaceDuration, @PlaceBuddies, @PlaceJournal);";
+            
+            MySqlParameter param1 = new MySqlParameter();
+            param1.ParameterName = "@PlaceName";
+            param1.Value = this.CityName;
+            cmd.Parameters.Add(param1);
+
+            MySqlParameter param2 = new MySqlParameter();
+            param2.ParameterName = "@PlaceDuration";
+            param2.Value = this.Duration;
+            cmd.Parameters.Add(param2);
+
+            MySqlParameter param3 = new MySqlParameter();
+            param3.ParameterName = "@PlaceBuddies";
+            param3.Value = this.Group;
+            cmd.Parameters.Add(param3);
+
+            MySqlParameter param4 = new MySqlParameter();
+            param4.ParameterName = "@PlaceJournal";
+            param4.Value = this.JournalEntry;
+            cmd.Parameters.Add(param4);
+            
             cmd.ExecuteNonQuery();
             Id = (int) cmd.LastInsertedId;
-
-            //Need more param?
 
             // End new code
 
@@ -132,12 +147,13 @@ namespace PlacesYouBeen.Models
             string placeJournal = "";
             while (rdr.Read())
             {
-                int placeId = rdr.GetInt32(0);
-                string placeName = rdr.GetString(1);
-                string placeDuration = rdr.GetString(1);
-                string placeGroup = rdr.GetString(1);
-                string placeJournal = rdr.GetString(1);
-                //Why aren't they working?
+                placeId = rdr.GetInt32(0);
+                placeName = rdr.GetString(1);
+                placeDuration = rdr.GetString(2);
+                placeGroup = rdr.GetString(3);
+                placeJournal = rdr.GetString(4);
+                //can reassign variables at any time, can not declare a variable twice in the same paramaters
+                //Do Not put the value type infront of a variable when you are changing its value
             }
             Place foundPlace = new Place(placeName, placeDuration, placeGroup, placeJournal, placeId);
 
